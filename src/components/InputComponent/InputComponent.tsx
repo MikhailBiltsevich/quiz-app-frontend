@@ -5,7 +5,10 @@ interface IProps {
   label: string
   type: string
   handler: (event: any) => void
-  error?: string
+  error?: {
+    title: string
+    description: string
+  }
 }
 
 class InputComponent extends React.Component<IProps> {
@@ -29,8 +32,8 @@ class InputComponent extends React.Component<IProps> {
 
         {this.props.error &&
           <div className='card error'>
-            <h3>Error</h3>
-            <p>{this.props.error}</p>
+            <h3>{this.props.error.title}</h3>
+            <p>{this.props.error.description}</p>
           </div>
         }
       </div>
