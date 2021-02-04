@@ -7,9 +7,10 @@ interface IProps {
 }
 
 export default function ButtonComponent(props: IProps) {
+  const { classNames = [], handlerClick, text } = props;
+  const classes = classNames.length ? classNames.join(' ') : undefined;
+
   return (
-    props.classNames
-      ? <button className={props.classNames.join(' ')} onClick={props.handlerClick}>{props.text}</button>
-      : <button onClick={props.handlerClick}>{props.text}</button>
+    <button className={classes} onClick={handlerClick}>{text}</button>
   );
 }
