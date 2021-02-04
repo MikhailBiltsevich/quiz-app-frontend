@@ -10,6 +10,8 @@ interface IProps {
 
 class InputComponent extends React.Component<IProps> {
   render() {
+    const errorStyle = this.props.error ? { borderColor: '#d32f2f' } : undefined;
+
     return (
       <div className="container">
         <div className='input-group vertical'>
@@ -17,19 +19,11 @@ class InputComponent extends React.Component<IProps> {
             {this.props.label}
           </label>
 
-          {this.props.error ?
-            <input style={{ borderColor: '#d32f2f' }}
-              type={this.props.type}
-              id={this.props.id}
-              placeholder={this.props.label}
-              onChange={this.props.handler} />
-            :
-            <input
-              type={this.props.type}
-              id={this.props.id}
-              placeholder={this.props.label}
-              onChange={this.props.handler} />
-          }
+          <input style={errorStyle}
+            type={this.props.type}
+            id={this.props.id}
+            placeholder={this.props.label}
+            onChange={this.props.handler} />
 
         </div>
 
