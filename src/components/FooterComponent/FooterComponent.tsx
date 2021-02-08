@@ -1,9 +1,8 @@
-export default function FooterComponent() {
-  return (
-    <footer className='sticky'>
-      <p style={{ textAlign: "center" }}>
-        &copy; {new Date().getFullYear()} Study Project
+const FooterComponent = () =>
+  <footer className='sticky'>
+    <p style={{ textAlign: "center" }}>
+      &copy; {new Date().getFullYear()} Study Project
       </p>
-    </footer>
-  )
-}
+  </footer>;
+
+export default FooterComponent;
