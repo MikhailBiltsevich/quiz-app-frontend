@@ -7,7 +7,7 @@ interface IProps {
   }
 }
 
-export default function HeaderComponent(props: IProps) {
+const HeaderComponent = (props: IProps) => {
   function signOutHandler(): void {
   }
 
@@ -23,3 +23,5 @@ export default function HeaderComponent(props: IProps) {
     </header>
   )
 }
+
+export default HeaderComponent;
