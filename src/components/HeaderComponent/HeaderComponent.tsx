@@ -1,3 +1,5 @@
+import ButtonComponent from '../ButtonComponent/ButtonComponent';
+
 interface IProps {
   user?: {
     id: number,
@@ -15,7 +17,7 @@ export default function HeaderComponent(props: IProps) {
       {props.user &&
         <>
           <span className='button col-sm-12 col-md'>{props.user.login}</span>
-          <button className='button col-sm-12 col-md-2' onClick={signOutHandler}>Sign out</button>
+          <ButtonComponent classNames={['button', 'col-sm-12', 'col-md-2']} handlerClick={signOutHandler} text='Sign out' />
         </>
       }
     </header>
