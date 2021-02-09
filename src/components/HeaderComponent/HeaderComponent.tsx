@@ -1,25 +1,14 @@
-import ButtonComponent from '../ButtonComponent/ButtonComponent';
-
 interface IProps {
-  user?: {
-    id: number,
-    login: string
-  }
+  content?: JSX.Element
 }
 
 const HeaderComponent = (props: IProps) => {
-  function signOutHandler(): void {
-  }
+  const { content } = props;
 
   return (
     <header className='sticky row'>
       <span className='logo col-sm-12 col-md-2'>quizes</span>
-      {props.user &&
-        <>
-          <span className='button col-sm-12 col-md'>{props.user.login}</span>
-          <ButtonComponent classNames={['button', 'col-sm-12', 'col-md-2']} handlerClick={signOutHandler} text='Sign out' />
-        </>
-      }
+      {content}
     </header>
   )
 }
