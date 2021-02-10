@@ -6,7 +6,7 @@ interface IProps {
   classNames?: string[]
 }
 
-export default function ButtonComponent(props: IProps) {
+const ButtonComponent = (props: IProps) => {
   const { classNames = [], handlerClick, text } = props;
   const classes = classNames.length ? classNames.join(' ') : undefined;
 
@@ -14,3 +14,5 @@ export default function ButtonComponent(props: IProps) {
     <button className={classes} onClick={handlerClick}>{text}</button>
   );
 }
+
+export default ButtonComponent;
