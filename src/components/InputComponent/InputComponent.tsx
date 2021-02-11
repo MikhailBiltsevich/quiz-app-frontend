@@ -4,7 +4,7 @@ interface IProps {
   id: string
   label: string
   type: string
-  handler: (event: any) => void
+  onChange: (event: any) => void
   error?: {
     title: string
     description: string
@@ -25,7 +25,7 @@ const InputComponent = (props: IProps) => {
           type={props.type}
           id={props.id}
           placeholder={props.label}
-          onChange={props.handler} />
+          onChange={props.onChange} />
 
       </div>
 
