@@ -2,16 +2,16 @@ import { SyntheticEvent } from 'react';
 
 interface IProps {
   text: string
-  handlerClick: (event: SyntheticEvent) => void
+  onClick: (event: SyntheticEvent) => void
   classNames?: string[]
 }
 
 const ButtonComponent = (props: IProps) => {
-  const { classNames = [], handlerClick, text } = props;
+  const { classNames = [], onClick, text } = props;
   const classes = classNames.length ? classNames.join(' ') : undefined;
 
   return (
-    <button className={classes} onClick={handlerClick}>{text}</button>
+    <button className={classes} onClick={onClick}>{text}</button>
   );
 }
 
