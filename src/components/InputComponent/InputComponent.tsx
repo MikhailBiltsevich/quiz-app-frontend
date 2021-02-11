@@ -11,34 +11,32 @@ interface IProps {
   }
 }
 
-class InputComponent extends React.Component<IProps> {
-  render() {
-    const errorStyle = this.props.error ? { borderColor: '#d32f2f' } : undefined;
+const InputComponent = (props: IProps) => {
+  const errorStyle = props.error ? { borderColor: '#d32f2f' } : undefined;
 
-    return (
-      <div className="container">
-        <div className='input-group vertical'>
-          <label htmlFor={this.props.id}>
-            {this.props.label}
-          </label>
+  return (
+    <div className="container">
+      <div className='input-group vertical'>
+        <label htmlFor={props.id}>
+          {props.label}
+        </label>
 
-          <input style={errorStyle}
-            type={this.props.type}
-            id={this.props.id}
-            placeholder={this.props.label}
-            onChange={this.props.onChange} />
+        <input style={errorStyle}
+          type={props.type}
+          id={props.id}
+          placeholder={props.label}
+          onChange={props.onChange} />
 
-        </div>
-
-        {this.props.error &&
-          <div className='card error'>
-            <h3>{this.props.error.title}</h3>
-            <p>{this.props.error.description}</p>
-          </div>
-        }
       </div>
-    );
-  }
+
+      {props.error &&
+        <div className='card error'>
+          <h3>{props.error.title}</h3>
+          <p>{props.error.description}</p>
+        </div>
+      }
+    </div>
+  );
 }
 
 export default InputComponent;
