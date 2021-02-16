@@ -1,9 +1,8 @@
-import React from 'react';
-
 interface IProps {
   id: string
   label: string
   type: string
+  value?: string
   onChange: (event: any) => void
   error?: {
     title: string
@@ -13,6 +12,7 @@ interface IProps {
 
 const InputComponent = (props: IProps) => {
   const errorStyle = props.error ? { borderColor: '#d32f2f' } : undefined;
+  const { value = '' } = props;
 
   return (
     <div className="container">
@@ -25,7 +25,8 @@ const InputComponent = (props: IProps) => {
           type={props.type}
           id={props.id}
           placeholder={props.label}
-          onChange={props.onChange} />
+          onChange={props.onChange}
+          value={value} />
 
       </div>
 
