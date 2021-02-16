@@ -1,6 +1,19 @@
 import CardComponent from "../../components/CardComponent/CardComponent"
 
-const QuizPage = () => {
+interface IProps {
+  quiz: {
+    title: string
+    questions: {
+      title: string
+      isMultiple: boolean
+      answers: string[]
+    }[]
+  }
+}
+
+const QuizPage = (props: IProps) => {
+  const { title, questions } = props.quiz;
+
   return (
     <div className='container'>
       <div className="row">
