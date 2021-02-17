@@ -15,7 +15,7 @@ const InputComponent = (props: IProps) => {
   const { value = '' } = props;
 
   return (
-    <div className="container">
+    <>
       <div className='input-group vertical'>
         <label htmlFor={props.id}>
           {props.label}
@@ -36,7 +36,7 @@ const InputComponent = (props: IProps) => {
           <p>{props.error.description}</p>
         </div>
       }
-    </div>
+    </>
   );
 }
 
