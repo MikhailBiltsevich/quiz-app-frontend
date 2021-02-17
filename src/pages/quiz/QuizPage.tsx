@@ -22,6 +22,9 @@ const QuizPage = (props: IProps) => {
     { key: 'multiply', value: 'Multiply' }
   ];
 
+  const hasQuestions = questions.length > 0 ? true : false;
+
+
   const templateHandler = () => { };
 
   return (
@@ -69,6 +72,56 @@ const QuizPage = (props: IProps) => {
               </div>
             </fieldset>
           </form>
+        </div>
+
+        <div className="col-md">
+
+          <CardComponent classNames={['fluid']}>
+            <div className="section">
+              <h3>Questions</h3>
+            </div>
+            <div className="section">
+              {hasQuestions
+                ?
+                <div className="collapse">
+                  {questions.map((item, qIndex) => (
+                    <CollapseSectionComponent id={qIndex.toString()} key={qIndex} label={item.title}>
+                      <div className="row">
+                        <div className="col-sm">
+                          <p>
+                            <strong>Type:</strong> {item.isMultiple ? 'Multiple' : 'Single'}
+                          </p>
+                          <ul>
+                            {item.answers.map((answer, aIndex) => (
+                              <li key={aIndex}>{answer}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="col-sm-3">
+                          <div className="input-group vertical">
+                            <ButtonComponent text='Edit' onClick={templateHandler}></ButtonComponent>
+                            <ButtonComponent text='Delete' classNames={['secondary']} onClick={templateHandler}></ButtonComponent>
+                          </div>
+                        </div>
+                      </div>
+                    </CollapseSectionComponent>)
+                  )}
+                </div>
+                :
+                <p>There are not any questions yet</p>
+              }
+            </div>
+          </CardComponent>
+
+          <div className="row">
+            <div className="col-md-8 col-md-offset-2">
+              <div className="button-group">
+                <ButtonComponent classNames={['tertiary']} text='Save' onClick={templateHandler}></ButtonComponent>
+                <ButtonComponent text='Cancel' onClick={templateHandler}></ButtonComponent>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div >
     </div >
