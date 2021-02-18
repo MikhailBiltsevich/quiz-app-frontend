@@ -3,6 +3,7 @@ import CardComponent from "../../components/CardComponent/CardComponent";
 import InputComponent from "../../components/InputComponent/InputComponent";
 import SelectComponent from "../../components/SelectComponent/SelectComponent";
 import CollapseSectionComponent from "../../components/CollapseSectionComponent/CollapseSectionComponent";
+import { useState } from "react";
 
 interface IProps {
   quiz: {
@@ -16,14 +17,18 @@ interface IProps {
 }
 
 const QuizPage = (props: IProps) => {
-  const { title, questions } = props.quiz;
+  //const { title, questions } = props.quiz;
   const questionType = [
     { key: 'single', value: 'Single' },
     { key: 'multiply', value: 'Multiply' }
   ];
 
-  const hasQuestions = questions.length > 0 ? true : false;
+  const [title, setTitle] = useState('');
+  const [questions, setQuestions]: any = useState([]);
 
+
+  const hasQuestions = questions.length > 0 ? true : false;
+  /////////////////////////////
 
   const templateHandler = () => { };
 
@@ -34,11 +39,9 @@ const QuizPage = (props: IProps) => {
           <form>
             <fieldset>
               <legend>Quiz</legend>
-              <InputComponent label='Title' onChange={templateHandler} type='text' id='quiz-title-input'></InputComponent>
+              <InputComponent value={title} label='Title' onChange={(event) => { setTitle(event.target.value) }} type='text' id='quiz-title-input'></InputComponent>
             </fieldset>
-          </form>
 
-          <form>
             <fieldset>
               <legend>Question</legend>
               <div className="row">
@@ -60,9 +63,7 @@ const QuizPage = (props: IProps) => {
                 <ButtonComponent text='Reset' onClick={templateHandler}></ButtonComponent>
               </div>
             </fieldset>
-          </form>
 
-          <form>
             <fieldset>
               <legend>Answer</legend>
               <InputComponent label='Text' onChange={templateHandler} type='text' id='answer-text-input' />
@@ -84,7 +85,7 @@ const QuizPage = (props: IProps) => {
               {hasQuestions
                 ?
                 <div className="collapse">
-                  {questions.map((item, qIndex) => (
+                  {questions.map((item: { title: string; isMultiple: any; answers: any[]; }, qIndex: number) => (
                     <CollapseSectionComponent id={qIndex.toString()} key={qIndex} label={item.title}>
                       <div className="row">
                         <div className="col-sm">
