@@ -10,7 +10,7 @@ export interface IQuiz {
 export interface IQuestion {
   id: number,
   text: string,
-  isMultiple: boolean,
+  type: 'single' | 'multiply',
   answers: IAnswer[]
 }
 

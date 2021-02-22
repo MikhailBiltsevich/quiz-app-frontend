@@ -3,33 +3,89 @@ import CardComponent from "../../components/CardComponent/CardComponent";
 import InputComponent from "../../components/InputComponent/InputComponent";
 import SelectComponent from "../../components/SelectComponent/SelectComponent";
 import CollapseSectionComponent from "../../components/CollapseSectionComponent/CollapseSectionComponent";
-import { useState } from "react";
+import { BaseSyntheticEvent, SyntheticEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addQuestion, selectQuestions, selectTitle, setTitle } from '../../app/slices/quizSlice';
+import { IAnswer, IQuestion } from "../../app/types";
 
-interface IProps {
-  quiz: {
-    title: string
-    questions: {
-      title: string
-      isMultiple: boolean
-      answers: string[]
-    }[]
-  }
-}
-
-const QuizPage = (props: IProps) => {
-  //const { title, questions } = props.quiz;
+const QuizPage = () => {
   const questionType = [
-    { key: 'single', value: 'Single' },
-    { key: 'multiply', value: 'Multiply' }
+    { id: 1, key: 'single', value: 'Single' },
+    { id: 2, key: 'multiply', value: 'Multiply' }
   ];
 
-  const [title, setTitle] = useState('');
-  const [questions, setQuestions]: any = useState([]);
+  const generateId = (identifiers: number[]) => {
+    return identifiers.length === 0 ? 1 : Math.max(...identifiers) + 1;
+  }
+
+  const dispatch = useDispatch();
+  const title = useSelector(selectTitle);
+  const questions = useSelector(selectQuestions);
+
+  const [type, setQuestionType]: ['single' | 'multiply', any] = useState('single');
+
+  const defaultQuestion: IQuestion = {
+    id: 0,
+    text: '',
+    answers: new Array<IAnswer>(),
+    type
+  }
+
+  const [question, setQuestion]: [IQuestion, any] = useState(defaultQuestion);
+
+  const defaultAnswer: IAnswer = {
+    id: 0,
+    text: '',
+    points: 0
+  }
+
+  const [answer, setAnswer]: [IAnswer, any] = useState(defaultAnswer);
+
+  const handleQuestionTypeChange = (event: BaseSyntheticEvent) => {
+    const selectedIndex = event.target.options.selectedIndex;
+    const key = event.target[selectedIndex].value;
+
+    let type: 'single' | 'multiply' = key;
+    setQuestionType(type);
+    setQuestion({ ...question, type });
+  }
+
+  const handleQuestionTextChange = (event: any) => {
+    setQuestion({ ...question, text: event.target.value });
+  }
+
+  const handleAnswerTextChange = (event: any) => {
+    setAnswer({ ...answer, text: event.target.value });
+  }
+
+  const handleAddQuestionClick = (event: SyntheticEvent) => {
+    event.preventDefault();
+    question.id = generateId(questions.map(item => item.id));
+    dispatch(addQuestion(question));
+    defaultQuestion.type = type;
+    setQuestion({ ...defaultQuestion });
+  }
+
+
+  const handleAddAnswerClick = (event: SyntheticEvent) => {
+    event.preventDefault();
+    question.answers.push({ ...answer, id: generateId(question.answers.map(item => item.id)) });
+    setQuestion({ ...question });
+    setAnswer({ ...defaultAnswer });
+  }
+
+  const handleResetQuestionClick = (event: SyntheticEvent) => {
+    event.preventDefault();
+    setQuestion({ ...defaultQuestion });
+  }
+
+  const handleResetAnswerClick = (event: SyntheticEvent) => {
+    event.preventDefault();
+    setAnswer({ ...defaultAnswer });
+  }
 
 
   const hasQuestions = questions.length > 0 ? true : false;
-  /////////////////////////////
-
   const templateHandler = () => { };
 
   return (
@@ -39,37 +95,37 @@ const QuizPage = (props: IProps) => {
           <form>
             <fieldset>
               <legend>Quiz</legend>
-              <InputComponent value={title} label='Title' onChange={(event) => { setTitle(event.target.value) }} type='text' id='quiz-title-input'></InputComponent>
+              <InputComponent value={title} label='Title' onChange={(event) => { dispatch(setTitle(event.target.value)); }} type='text' id='quiz-title-input'></InputComponent>
             </fieldset>
 
             <fieldset>
               <legend>Question</legend>
               <div className="row">
                 <div className="col-md">
-                  <InputComponent label='Text' onChange={templateHandler} type='text' id='question-text-input' />
+                  <InputComponent label='Text' onChange={handleQuestionTextChange} value={question.text} type='text' id='question-text-input' />
                   <div className='input-group vertical'>
                     <label>Type</label>
-                    <SelectComponent options={questionType} onChange={templateHandler}></SelectComponent>
+                    <SelectComponent options={questionType} onChange={handleQuestionTypeChange}></SelectComponent>
                   </div>
                 </div>
               </div>
 
               <div className='input-group vertical'>
                 <label>Answers</label>
-                <SelectComponent options={[]} onChange={templateHandler}></SelectComponent>
+                <SelectComponent options={question.answers.map(item => ({ key: item.id.toString(), value: item.text }))} onChange={templateHandler}></SelectComponent>
               </div>
               <div className="button-group">
-                <ButtonComponent classNames={['primary']} text='Add' onClick={templateHandler}></ButtonComponent>
-                <ButtonComponent text='Reset' onClick={templateHandler}></ButtonComponent>
+                <ButtonComponent classNames={['primary']} text='Add' onClick={handleAddQuestionClick}></ButtonComponent>
+                <ButtonComponent text='Reset' onClick={handleResetQuestionClick}></ButtonComponent>
               </div>
             </fieldset>
 
             <fieldset>
               <legend>Answer</legend>
-              <InputComponent label='Text' onChange={templateHandler} type='text' id='answer-text-input' />
+              <InputComponent label='Text' onChange={handleAnswerTextChange} value={answer.text} type='text' id='answer-text-input' />
               <div className="button-group">
-                <ButtonComponent classNames={['primary']} text='Add' onClick={templateHandler}></ButtonComponent>
-                <ButtonComponent text='Reset' onClick={templateHandler}></ButtonComponent>
+                <ButtonComponent classNames={['primary']} text='Add' onClick={handleAddAnswerClick}></ButtonComponent>
+                <ButtonComponent text='Reset' onClick={handleResetAnswerClick}></ButtonComponent>
               </div>
             </fieldset>
           </form>
@@ -85,16 +141,16 @@ const QuizPage = (props: IProps) => {
               {hasQuestions
                 ?
                 <div className="collapse">
-                  {questions.map((item: { title: string; isMultiple: any; answers: any[]; }, qIndex: number) => (
-                    <CollapseSectionComponent id={qIndex.toString()} key={qIndex} label={item.title}>
+                  {questions.map((item) => (
+                    <CollapseSectionComponent id={item.id.toString()} key={item.id} label={item.text}>
                       <div className="row">
                         <div className="col-sm">
                           <p>
-                            <strong>Type:</strong> {item.isMultiple ? 'Multiple' : 'Single'}
+                            <strong>Type:</strong> {item.type}
                           </p>
                           <ul>
-                            {item.answers.map((answer, aIndex) => (
-                              <li key={aIndex}>{answer}</li>
+                            {item.answers.map((answer) => (
+                              <li key={answer.id}>{answer.text}</li>
                             ))}
                           </ul>
                         </div>
