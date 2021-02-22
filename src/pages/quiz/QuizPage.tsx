@@ -5,7 +5,7 @@ import SelectComponent from "../../components/SelectComponent/SelectComponent";
 import CollapseSectionComponent from "../../components/CollapseSectionComponent/CollapseSectionComponent";
 import { BaseSyntheticEvent, SyntheticEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addQuestion, selectQuestions, selectTitle, setTitle } from '../../app/slices/quizSlice';
+import { addQuestion, removeQuestion, selectQuestions, selectTitle, setTitle } from '../../app/slices/quizSlice';
 import { IAnswer, IQuestion } from "../../app/types";
 
 const QuizPage = () => {
@@ -84,6 +84,12 @@ const QuizPage = () => {
     setAnswer({ ...defaultAnswer });
   }
 
+  const handleDeleteQuestion = (event: any) => {
+    const questionId = +event.target.dataset.id;
+    const index = questions.findIndex(question => question.id === questionId);
+    dispatch(removeQuestion(index));
+  }
+
 
   const hasQuestions = questions.length > 0 ? true : false;
   const templateHandler = () => { };
@@ -157,7 +163,7 @@ const QuizPage = () => {
                         <div className="col-sm-3">
                           <div className="input-group vertical">
                             <ButtonComponent text='Edit' onClick={templateHandler}></ButtonComponent>
-                            <ButtonComponent text='Delete' classNames={['secondary']} onClick={templateHandler}></ButtonComponent>
+                            <ButtonComponent id={item.id} text='Delete' classNames={['secondary']} onClick={handleDeleteQuestion}></ButtonComponent>
                           </div>
                         </div>
                       </div>
