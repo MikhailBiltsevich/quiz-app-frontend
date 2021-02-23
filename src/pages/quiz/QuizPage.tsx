@@ -118,6 +118,19 @@ const QuizPage = () => {
     }
   }
 
+  const handleDeleteAnswerClick = (event: any) => {
+    event.preventDefault();
+    const answers = [...question.answers];
+    const index = answers.findIndex(a => answer.id === a.id);
+
+    answers.splice(index, 1);
+    setQuestion({ ...question, answers });
+    const selectedAnswer = answers.length
+      ? { ...answers[0] }
+      : { ...defaultAnswer };
+    setAnswer(selectedAnswer);
+  }
+
   const handleEditQuestionClick = (event: any) => {
     const questionId = +event.target.dataset.id;
     const findedQuestion = questions.find((q) => q.id === questionId);
@@ -171,6 +184,7 @@ const QuizPage = () => {
               <div className="button-group">
                 <ButtonComponent classNames={['primary']} text='Save' onClick={handleSaveAnswerClick}></ButtonComponent>
                 <ButtonComponent text='Reset' onClick={handleResetAnswerClick}></ButtonComponent>
+                <ButtonComponent text='Delete' onClick={handleDeleteAnswerClick} isDisabled={false}></ButtonComponent>
               </div>
             </fieldset>
           </form>
