@@ -77,6 +77,7 @@ const QuizPage = () => {
     }
     defaultQuestion.type = type;
     setQuestion({ ...defaultQuestion });
+    setAnswer({ ...defaultAnswer });
   }
 
 
@@ -88,13 +89,13 @@ const QuizPage = () => {
     if (!answer.id) {
       newAnswer.id = generateId(question.answers.map(item => item.id));
       answers = [...question.answers, newAnswer];
+      setAnswer({ ...defaultAnswer });
     } else {
       const index = question.answers.findIndex(a => a.id === newAnswer.id);
       answers = [...question.answers];
       answers.splice(index, 1, newAnswer);
     }
     setQuestion({ ...question, answers });
-    setAnswer({ ...defaultAnswer });
   }
 
   const handleResetQuestionClick = (event: SyntheticEvent) => {
@@ -113,6 +114,7 @@ const QuizPage = () => {
     dispatch(removeQuestion(index));
     if (question.id === questionId) {
       setQuestion({ ...defaultQuestion });
+      setAnswer({ ...defaultAnswer });
     }
   }
 
@@ -121,7 +123,11 @@ const QuizPage = () => {
     const findedQuestion = questions.find((q) => q.id === questionId);
     setQuestion({ ...findedQuestion });
     setQuestionType(findedQuestion?.type);
-    setAnswer({ ...defaultAnswer });
+    const selectedAnswer = findedQuestion?.answers.length
+      ? { ...findedQuestion.answers[0] }
+      : { ...defaultAnswer };
+
+    setAnswer(selectedAnswer);
   }
 
   const hasQuestions = questions.length > 0 ? true : false;
@@ -151,7 +157,7 @@ const QuizPage = () => {
 
               <div className='input-group vertical'>
                 <label>Answers</label>
-                <SelectComponent options={question.answers.map(item => ({ key: item.id.toString(), value: item.text }))} onChange={handleAnswerChange}></SelectComponent>
+                <SelectComponent options={question.answers.map(item => ({ key: item.id.toString(), value: item.text }))} value={answer.id.toString()} onChange={handleAnswerChange}></SelectComponent>
               </div>
               <div className="button-group">
                 <ButtonComponent classNames={['primary']} text='Add' onClick={handleAddQuestionClick}></ButtonComponent>
