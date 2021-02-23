@@ -120,6 +120,7 @@ const QuizPage = () => {
     const questionId = +event.target.dataset.id;
     const findedQuestion = questions.find((q) => q.id === questionId);
     setQuestion({ ...findedQuestion });
+    setQuestionType(findedQuestion?.type);
     setAnswer({ ...defaultAnswer });
   }
 
@@ -143,7 +144,7 @@ const QuizPage = () => {
                   <InputComponent label='Text' onChange={handleQuestionTextChange} value={question.text} type='text' id='question-text-input' />
                   <div className='input-group vertical'>
                     <label>Type</label>
-                    <SelectComponent options={questionType} onChange={handleQuestionTypeChange}></SelectComponent>
+                    <SelectComponent options={questionType} value={type} onChange={handleQuestionTypeChange}></SelectComponent>
                   </div>
                 </div>
               </div>
