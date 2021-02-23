@@ -5,7 +5,7 @@ import SelectComponent from "../../components/SelectComponent/SelectComponent";
 import CollapseSectionComponent from "../../components/CollapseSectionComponent/CollapseSectionComponent";
 import { BaseSyntheticEvent, SyntheticEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addQuestion, removeQuestion, selectQuestions, selectTitle, setTitle } from '../../app/slices/quizSlice';
+import { addQuestion, removeQuestion, selectQuestions, selectTitle, setTitle, updateQuestion } from '../../app/slices/quizSlice';
 import { IAnswer, IQuestion } from "../../app/types";
 
 const QuizPage = () => {
@@ -60,8 +60,13 @@ const QuizPage = () => {
 
   const handleAddQuestionClick = (event: SyntheticEvent) => {
     event.preventDefault();
-    question.id = generateId(questions.map(item => item.id));
-    dispatch(addQuestion(question));
+    if (!question.id) {
+      question.id = generateId(questions.map(item => item.id));
+      dispatch(addQuestion(question));
+    } else {
+      const index = questions.findIndex(q => q.id === question.id)
+      dispatch(updateQuestion({ index, question }));
+    }
     defaultQuestion.type = type;
     setQuestion({ ...defaultQuestion });
   }
@@ -69,8 +74,8 @@ const QuizPage = () => {
 
   const handleAddAnswerClick = (event: SyntheticEvent) => {
     event.preventDefault();
-    question.answers.push({ ...answer, id: generateId(question.answers.map(item => item.id)) });
-    setQuestion({ ...question });
+    const newAnswers = [...question.answers, { ...answer, id: generateId(question.answers.map(item => item.id)) }];
+    setQuestion({ ...question, answers: newAnswers });
     setAnswer({ ...defaultAnswer });
   }
 
@@ -86,10 +91,19 @@ const QuizPage = () => {
 
   const handleDeleteQuestion = (event: any) => {
     const questionId = +event.target.dataset.id;
-    const index = questions.findIndex(question => question.id === questionId);
+    const index = questions.findIndex(q => q.id === questionId);
     dispatch(removeQuestion(index));
+    if (question.id === questionId) {
+      setQuestion({ ...defaultQuestion });
+    }
   }
 
+  const handleEditQuestionClick = (event: any) => {
+    const questionId = +event.target.dataset.id;
+    const findedQuestion = questions.find((q) => q.id === questionId);
+    setQuestion({ ...findedQuestion });
+    setAnswer({ ...defaultAnswer });
+  }
 
   const hasQuestions = questions.length > 0 ? true : false;
   const templateHandler = () => { };
@@ -162,7 +176,7 @@ const QuizPage = () => {
                         </div>
                         <div className="col-sm-3">
                           <div className="input-group vertical">
-                            <ButtonComponent text='Edit' onClick={templateHandler}></ButtonComponent>
+                            <ButtonComponent id={item.id} text='Edit' onClick={handleEditQuestionClick}></ButtonComponent>
                             <ButtonComponent id={item.id} text='Delete' classNames={['secondary']} onClick={handleDeleteQuestion}></ButtonComponent>
                           </div>
                         </div>

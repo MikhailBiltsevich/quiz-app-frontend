@@ -18,11 +18,16 @@ const quizSlice = createSlice({
 
     removeQuestion: (state, action: PayloadAction<number>) => {
       state.questions.splice(action.payload, 1);
+    },
+
+    updateQuestion: (state, action: PayloadAction<{ index: number, question: IQuestion }>) => {
+      const { index, question } = action.payload;
+      state.questions[index] = question;
     }
   }
 });
 
-export const { setTitle, addQuestion, removeQuestion } = quizSlice.actions;
+export const { setTitle, addQuestion, removeQuestion, updateQuestion } = quizSlice.actions;
 
 export const selectTitle = (state: IState) => state.quiz.title;
 export const selectQuestions = (state: IState) => state.quiz.questions;
