@@ -50,6 +50,14 @@ const QuizPage = () => {
     setQuestion({ ...question, type });
   }
 
+  const handleAnswerChange = (event: BaseSyntheticEvent) => {
+    const selectedIndex = event.target.options.selectedIndex;
+    const id = +event.target[selectedIndex].value;
+
+    const findedAnswer = question.answers.find(a => a.id === id);
+    setAnswer({ ...findedAnswer });
+  }
+
   const handleQuestionTextChange = (event: any) => {
     setQuestion({ ...question, text: event.target.value });
   }
@@ -74,8 +82,18 @@ const QuizPage = () => {
 
   const handleAddAnswerClick = (event: SyntheticEvent) => {
     event.preventDefault();
-    const newAnswers = [...question.answers, { ...answer, id: generateId(question.answers.map(item => item.id)) }];
-    setQuestion({ ...question, answers: newAnswers });
+    const newAnswer = { ...answer };
+    let answers: IAnswer[];
+
+    if (!answer.id) {
+      newAnswer.id = generateId(question.answers.map(item => item.id));
+      answers = [...question.answers, newAnswer];
+    } else {
+      const index = question.answers.findIndex(a => a.id === newAnswer.id);
+      answers = [...question.answers];
+      answers.splice(index, 1, newAnswer);
+    }
+    setQuestion({ ...question, answers });
     setAnswer({ ...defaultAnswer });
   }
 
@@ -132,7 +150,7 @@ const QuizPage = () => {
 
               <div className='input-group vertical'>
                 <label>Answers</label>
-                <SelectComponent options={question.answers.map(item => ({ key: item.id.toString(), value: item.text }))} onChange={templateHandler}></SelectComponent>
+                <SelectComponent options={question.answers.map(item => ({ key: item.id.toString(), value: item.text }))} onChange={handleAnswerChange}></SelectComponent>
               </div>
               <div className="button-group">
                 <ButtonComponent classNames={['primary']} text='Add' onClick={handleAddQuestionClick}></ButtonComponent>
