@@ -66,7 +66,7 @@ const QuizPage = () => {
     setAnswer({ ...answer, text: event.target.value });
   }
 
-  const handleAddQuestionClick = (event: SyntheticEvent) => {
+  const handleSaveQuestionClick = (event: SyntheticEvent) => {
     event.preventDefault();
     if (!question.id) {
       question.id = generateId(questions.map(item => item.id));
@@ -81,7 +81,7 @@ const QuizPage = () => {
   }
 
 
-  const handleAddAnswerClick = (event: SyntheticEvent) => {
+  const handleSaveAnswerClick = (event: SyntheticEvent) => {
     event.preventDefault();
     const newAnswer = { ...answer };
     let answers: IAnswer[];
@@ -108,7 +108,7 @@ const QuizPage = () => {
     setAnswer({ ...defaultAnswer });
   }
 
-  const handleDeleteQuestion = (event: any) => {
+  const handleDeleteQuestionClick = (event: any) => {
     const questionId = +event.target.dataset.id;
     const index = questions.findIndex(q => q.id === questionId);
     dispatch(removeQuestion(index));
@@ -160,7 +160,7 @@ const QuizPage = () => {
                 <SelectComponent options={question.answers.map(item => ({ key: item.id.toString(), value: item.text }))} value={answer.id.toString()} onChange={handleAnswerChange}></SelectComponent>
               </div>
               <div className="button-group">
-                <ButtonComponent classNames={['primary']} text='Add' onClick={handleAddQuestionClick}></ButtonComponent>
+                <ButtonComponent classNames={['primary']} text='Save' onClick={handleSaveQuestionClick}></ButtonComponent>
                 <ButtonComponent text='Reset' onClick={handleResetQuestionClick}></ButtonComponent>
               </div>
             </fieldset>
@@ -169,7 +169,7 @@ const QuizPage = () => {
               <legend>Answer</legend>
               <InputComponent label='Text' onChange={handleAnswerTextChange} value={answer.text} type='text' id='answer-text-input' />
               <div className="button-group">
-                <ButtonComponent classNames={['primary']} text='Add' onClick={handleAddAnswerClick}></ButtonComponent>
+                <ButtonComponent classNames={['primary']} text='Save' onClick={handleSaveAnswerClick}></ButtonComponent>
                 <ButtonComponent text='Reset' onClick={handleResetAnswerClick}></ButtonComponent>
               </div>
             </fieldset>
@@ -202,7 +202,7 @@ const QuizPage = () => {
                         <div className="col-sm-3">
                           <div className="input-group vertical">
                             <ButtonComponent id={item.id} text='Edit' onClick={handleEditQuestionClick}></ButtonComponent>
-                            <ButtonComponent id={item.id} text='Delete' classNames={['secondary']} onClick={handleDeleteQuestion}></ButtonComponent>
+                            <ButtonComponent id={item.id} text='Delete' classNames={['secondary']} onClick={handleDeleteQuestionClick}></ButtonComponent>
                           </div>
                         </div>
                       </div>
