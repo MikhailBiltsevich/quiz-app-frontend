@@ -6,14 +6,9 @@ import CollapseSectionComponent from "../../components/CollapseSectionComponent/
 import { BaseSyntheticEvent, SyntheticEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addQuestion, removeQuestion, selectQuestions, selectTitle, setTitle, updateQuestion } from '../../app/slices/quizSlice';
-import { IAnswer, IQuestion } from "../../app/types";
+import { IAnswer, IQuestion, questionTypes } from "../../app/types";
 
 const QuizPage = () => {
-  const questionType = [
-    { id: 1, key: 'single', value: 'Single' },
-    { id: 2, key: 'multiply', value: 'Multiply' }
-  ];
-
   const generateId = (identifiers: number[]) => {
     return identifiers.length === 0 ? 1 : Math.max(...identifiers) + 1;
   }
@@ -163,7 +158,7 @@ const QuizPage = () => {
                   <InputComponent label='Text' onChange={handleQuestionTextChange} value={question.text} type='text' id='question-text-input' />
                   <div className='input-group vertical'>
                     <label>Type</label>
-                    <SelectComponent options={questionType} value={type} onChange={handleQuestionTypeChange}></SelectComponent>
+                    <SelectComponent options={questionTypes} value={type} onChange={handleQuestionTypeChange}></SelectComponent>
                   </div>
                 </div>
               </div>

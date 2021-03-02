@@ -19,3 +19,8 @@ export interface IAnswer {
   text: string,
   points: number
 }
+
+export const questionTypes = [
+  { id: 1, key: 'single', value: 'Single' },
+  { id: 2, key: 'multiply', value: 'Multiply' }
+];
