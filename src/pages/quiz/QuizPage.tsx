@@ -3,6 +3,7 @@ import CardComponent from "../../components/CardComponent/CardComponent";
 import InputComponent from "../../components/InputComponent/InputComponent";
 import SelectComponent from "../../components/SelectComponent/SelectComponent";
 import CollapseSectionComponent from "../../components/CollapseSectionComponent/CollapseSectionComponent";
+import FieldsetComponent from "../../components/FieldsetComponent/FieldsetComponent";
 import { BaseSyntheticEvent, SyntheticEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addQuestion, removeQuestion, selectQuestions, selectTitle, setTitle, updateQuestion } from '../../app/slices/quizSlice';
@@ -146,13 +147,12 @@ const QuizPage = () => {
       <div className="row">
         <div className="col-md-5">
           <form>
-            <fieldset>
-              <legend>Quiz</legend>
+            <FieldsetComponent legendText='Quiz'>
               <InputComponent value={title} label='Title' onChange={(event) => { dispatch(setTitle(event.target.value)); }} type='text' id='quiz-title-input'></InputComponent>
-            </fieldset>
+            </FieldsetComponent>
 
-            <fieldset>
-              <legend>Question</legend>
+
+            <FieldsetComponent legendText='Question'>
               <div className="row">
                 <div className="col-md">
                   <InputComponent label='Text' onChange={handleQuestionTextChange} value={question.text} type='text' id='question-text-input' />
@@ -171,17 +171,16 @@ const QuizPage = () => {
                 <ButtonComponent classNames={['primary']} text='Save' onClick={handleSaveQuestionClick}></ButtonComponent>
                 <ButtonComponent text='Reset' onClick={handleResetQuestionClick}></ButtonComponent>
               </div>
-            </fieldset>
+            </FieldsetComponent>
 
-            <fieldset>
-              <legend>Answer</legend>
+            <FieldsetComponent legendText='Answer'>
               <InputComponent label='Text' onChange={handleAnswerTextChange} value={answer.text} type='text' id='answer-text-input' />
               <div className="button-group">
                 <ButtonComponent classNames={['primary']} text='Save' onClick={handleSaveAnswerClick}></ButtonComponent>
                 <ButtonComponent text='Reset' onClick={handleResetAnswerClick}></ButtonComponent>
                 <ButtonComponent text='Delete' onClick={handleDeleteAnswerClick} isDisabled={false}></ButtonComponent>
               </div>
-            </fieldset>
+            </FieldsetComponent>
           </form>
         </div>
 
