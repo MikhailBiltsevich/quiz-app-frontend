@@ -1,5 +1,6 @@
 import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 import InputComponent from "../../components/InputComponent/InputComponent";
+import InputGroupComponent from "../../components/InputGroupComponent/InputGroupComponent";
 
 const SignInPage = () => {
   const handleSubmit = () => { };
@@ -10,8 +11,12 @@ const SignInPage = () => {
     <div className='row'>
       <div className='col-sm-12 col-md-5 col-lg-3'>
         <form>
-          <InputComponent id='login' label='Username' type='text' onChange={handleUsernameChange} />
-          <InputComponent id='password' label='Password' type='password' onChange={handlePasswordChange} />
+          <InputGroupComponent labelText='Username'>
+            <InputComponent id='login' placeholder='Username' type='text' onChange={handleUsernameChange} />
+          </InputGroupComponent>
+          <InputGroupComponent labelText='Password'>
+            <InputComponent id='password' placeholder='Password' type='password' onChange={handlePasswordChange} />
+          </InputGroupComponent>
           <ButtonComponent text='Sign in' classNames={['primary']} onClick={handleSubmit} />
         </form>
       </div>
