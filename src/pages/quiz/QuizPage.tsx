@@ -38,6 +38,9 @@ const QuizPage = () => {
 
   const [answer, setAnswer]: [IAnswer, any] = useState(defaultAnswer);
 
+  const resetAnswer = () => setAnswer(defaultAnswer);
+  const resetQuestion = () => setQuestion(defaultQuestion);
+
   const handleQuestionTypeChange = (event: BaseSyntheticEvent) => {
     const selectedIndex = event.target.options.selectedIndex;
     const key = event.target[selectedIndex].value;
@@ -73,8 +76,8 @@ const QuizPage = () => {
       dispatch(updateQuestion({ index, question }));
     }
     defaultQuestion.type = type;
-    setQuestion({ ...defaultQuestion });
-    setAnswer({ ...defaultAnswer });
+    resetQuestion();
+    resetAnswer();
   }
 
 
@@ -86,7 +89,7 @@ const QuizPage = () => {
     if (!answer.id) {
       newAnswer.id = generateId(question.answers.map(item => item.id));
       answers = [...question.answers, newAnswer];
-      setAnswer({ ...defaultAnswer });
+      resetAnswer();
     } else {
       const index = question.answers.findIndex(a => a.id === newAnswer.id);
       answers = [...question.answers];
@@ -97,12 +100,12 @@ const QuizPage = () => {
 
   const handleResetQuestionClick = (event: SyntheticEvent) => {
     event.preventDefault();
-    setQuestion({ ...defaultQuestion });
+    resetQuestion();
   }
 
   const handleResetAnswerClick = (event: SyntheticEvent) => {
     event.preventDefault();
-    setAnswer({ ...defaultAnswer });
+    resetAnswer();
   }
 
   const handleDeleteQuestionClick = (event: any) => {
@@ -110,8 +113,8 @@ const QuizPage = () => {
     const index = questions.findIndex(q => q.id === questionId);
     dispatch(removeQuestion(index));
     if (question.id === questionId) {
-      setQuestion({ ...defaultQuestion });
-      setAnswer({ ...defaultAnswer });
+      resetQuestion();
+      resetAnswer();
     }
   }
 
