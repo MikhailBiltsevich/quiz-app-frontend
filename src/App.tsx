@@ -1,11 +1,11 @@
-import React from 'react';
 import 'mini.css';
+import QuizPage from './pages/quiz';
 
 function App() {
   return (
-    <h1>
-      Must be content
-    </h1>
+    <>
+      <QuizPage />
+    </>
   );
 }
 
